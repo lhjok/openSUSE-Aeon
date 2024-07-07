@@ -66,6 +66,9 @@ $ sudo transactional-update pkg install git aria2
 # 执行下面命令后，在软件仓库设置开启第三方Flathub源。
 $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 $ flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+#################################################################################
+# https://extensions.gnome.org/extension/261/kimpanel/    // 安装Kimpanel面板插件
+#################################################################################
 # 安装了kimpanel输入法状态管理的配置。
 $ vim ~/.local/share/gnome-shell/extensions/kimpanel@kde.org/stylesheet.css
 # .kimpanel-candidate-item
@@ -128,8 +131,6 @@ $ sudo cp /home/lhjok/.local/share/flatpak/app/org.fcitx.Fcitx5/current/active/e
 /applications/org.fcitx.Fcitx5.desktop /etc/xdg/autostart/
 $ sudo cp /home/lhjok/.local/share/flatpak/app/com.dropbox.Client/current/active/export/share\
 /applications/com.dropbox.Client.desktop /etc/xdg/autostart/
-##############################################################################
-# https://extensions.gnome.org/extension/261/kimpanel/    // 安装Kimpanel面板
 ```
 
 - 禁用ibus（因为Fedora中gnome-shell强依赖ibus所以无法直接删除ibus）
