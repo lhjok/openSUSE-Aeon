@@ -52,10 +52,10 @@ export PATH="$ANDROID_HOME/tools:$PATH:$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/emulator:$PATH"
 ```
 
-- 本地系统安装NVIDIA显卡驱动：
+- 本地系统安装常用工具：
 
 ```sh
-# 更新整个系统和常用工具
+# 更新整个系统和安装常用工具
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install git aria2
 ```
@@ -133,7 +133,7 @@ $ sudo cp /home/lhjok/.local/share/flatpak/app/com.dropbox.Client/current/active
 /applications/com.dropbox.Client.desktop /etc/xdg/autostart/
 ```
 
-- 禁用ibus（因为Fedora中gnome-shell强依赖ibus所以无法直接删除ibus）
+- 禁用ibus（因为Gnome-Shell强依赖ibus所以无法直接删除ibus）
 
 ```sh
 $ systemctl mask --user org.freedesktop.IBus.session.GNOME.service
@@ -166,13 +166,14 @@ qemu-device-display-virtio-vga qemu-device-display-virtio-vga-gl
 - 升级和回滚系统：
 
 ```sh
-$ sudo transactional-update pkg install package_name    //安装系统包
-$ sudo transactional-update --continue 13 pkg install package_name    //在指定快照至少安装包，不用重启可激活。
-$ sudo transactional-update pkg remove package_name    //删除单个包
-$ sudo transactional-update dup    //执行系统更新
-$ sudo transactional-update cleanup    //删除旧快照
+$ sudo transactional-update pkg install package_name    //安装系统包(重启后生效)
+$ sudo transactional-update --continue 13 pkg install package_name    //在指定快照至少安装包(不用重启可生效)。
+$ sudo transactional-update pkg remove package_name    //删除单个包(重启后生效)
+$ sudo transactional-update dup    //执行系统更新(重启后生效)
+$ sudo transactional-update cleanup    //删除旧快照(重启后生效)
 $ sudo transactional-update --help    //查看帮助文档
-$ sudo transactional-update rollback snapshot_number    //回滚到指定版本
+$ sudo transactional-update shell    //在新的快照中使用zypper包管理工具(重启后生效)
+$ sudo transactional-update rollback snapshot_number    //回滚到指定版本(重启后生效)
 ```
 
 - 本地编译安装NeoVim编辑器：
