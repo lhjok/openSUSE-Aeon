@@ -167,7 +167,7 @@ qemu-device-display-virtio-vga qemu-device-display-virtio-vga-gl
 
 ```sh
 $ sudo transactional-update pkg install package_name    //安装系统包(重启后生效)
-$ sudo transactional-update --continue 13 pkg install package_name    //在指定快照至少安装包(不用重启可生效)。
+$ sudo transactional-update --continue 9 pkg install package_name  //在指定快照安装包(不用重启可生效)
 $ sudo transactional-update pkg remove package_name    //删除单个包(重启后生效)
 $ sudo transactional-update dup    //执行系统更新(重启后生效)
 $ sudo transactional-update cleanup    //删除旧快照(重启后生效)
