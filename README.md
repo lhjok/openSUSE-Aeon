@@ -1,18 +1,13 @@
 ## openSUSE Aeon
 不可变操作系统、只读操作系统、桌面容器操作系统。
 
-- 安装阶段，`/boot` 分区不能使用 `Btrfs` 文件系统。
+- 安装阶段：默认会使用整个磁盘，并且不能自定义分区。
 
-```sh
- 分区方案 (一、优点，可变分区在固态系统盘，程序运行会更快)：
- /boot= 10G(Ext4)、/boot/efi= 2G(EFI)、swap= 16G、
- /= 80G(Btrfs)、/home= 剩余固态磁盘(Btrfs)、用户挂载(~/data)=剩余机械磁盘(Btrfs)。
-```
-
-```sh
- 分区方案 (二、优点，可变分区挂在机械硬盘，可提高固态硬盘寿命)：
- /boot= 15G(Ext4)、/boot/efi= 2G(EFI)、swap= 16G、
- /= 剩余固态磁盘(Btrfs)、/var= 机械磁盘(Btrfs=200G)、/home= 剩余机械磁盘(Btrfs)。
+```text
+ 一、选择要安装Aeon的磁盘，该磁盘将在Aeon安装过程中被擦除，因此请确保事先备份所有重要数据。
+ 二、如果所选磁盘已经安装Aeon系统，其中包含在btrfs/home子卷中的用户数据将会被安装程序自动备份。
+ 三、但前提是你的U盘驱动器有足够大的空间，安装程序才会备份现有用户名、密码和Wifi/VPN等配置，并
+ 在此过程结束时将它们恢复到您的全新Aeon安装。
 ```
 
 - 核心三大工具：`Distrobox` 容器工具 `Transactional-Update` 系统包管理器 `Flatpack` 桌面应用容器。
@@ -34,22 +29,17 @@
 
 #### 添加PATH环境变量
 
-- 编辑 `~/.bash_profile` `~/.bashrc` 设置环境变量：
+- 编辑 `vim ~/.bash_profile` `vim ~/.bashrc` 设置环境变量：
 
 ```sh
-export ANDROID_HOME=$HOME/.Android/SDK
-export PUB_HOSTED_URL=https://pub.flutter-io.cn
-export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
-export GOPATH=$HOME/.golang
-export JAVA_HOME=$HOME/.opt/jdk
-export PATH=$JAVA_HOME/bin:$PATH
-export PATH=$HOME/.opt/go/bin:$PATH
-export PATH=$HOME/.opt/node/bin:$PATH
-export PATH=$HOME/.opt/neovim/bin:$PATH
+export NVM_DIR="$HOME/.nvm"
+export GOPATH="$HOME/.golang"
+export JAVA_HOME="$HOME/.opt/jdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$HOME/.opt/go/bin:$PATH"
+export PATH="$HOME/.opt/neovim/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH:$HOME/.npm-global/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH:$HOME/.opt/flutter/bin:$PATH:$HOME/.opt/dart-sdk/bin:$PATH"
-export PATH="$ANDROID_HOME/tools:$PATH:$ANDROID_HOME/platform-tools:$PATH"
-export PATH="$ANDROID_HOME/emulator:$PATH"
+export PATH="$GOPATH/bin:$PATH"
 ```
 
 - 本地系统安装常用工具：
@@ -106,6 +96,7 @@ $ flatpak install flathub com.discordapp.Discord
 $ flatpak install flathub io.beekeeperstudio.Studio
 $ flatpak install flathub org.dbgate.DbGate
 $ flatpak install flathub io.podman_desktop.PodmanDesktop
+$ flatpak install flathub io.gitlab.adhami3310.Impression
 $ flatpak install flathub io.github.shiftey.Desktop
 $ flatpak install flathub org.mozilla.Thunderbird
 $ flatpak install flathub com.redis.RedisInsight
@@ -158,9 +149,8 @@ export XMODIFIERS=@im=fcitx
 - 本地系统安装 `Virt-Manager` 虚拟机：
 
 ```sh
-$ sudo transactional-update pkg install virt-install libvirt-daemon-kvm \
-libvirt-daemon-config-network qemu-kvm virt-manager virt-viewer virglrenderer \
-qemu-device-display-virtio-vga qemu-device-display-virtio-vga-gl
+$ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
+qemu-tools virt-install libvirt-daemon-config-network virt-manager virt-viewer
 ```
 
 - 升级和回滚系统：
@@ -182,7 +172,7 @@ $ sudo transactional-update rollback snapshot_number    //回滚到指定版本(
 $ pip3 install pynvim
 $ git clone https://github.com/neovim/neovim.git
 $ cd neovim
-$ make CMAKE_INSTALL_PREFIX=/var/home/lhjok/.opt/neovim/
+$ make CMAKE_INSTALL_PREFIX=/home/lhjok/.opt/neovim/
 $ make install
 ```
 
