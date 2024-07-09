@@ -298,7 +298,7 @@ mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'yourpassw
     "terminal.integrated.profiles.linux": {
         "Distrobox": {
             "path": "bash",
-            "args": ["-c", "flatpak-spawn --host distrobox enter -c opensuse"]
+            "args": ["-c", "flatpak-spawn --host distrobox enter opensuse"]
         }
     },
     "terminal.integrated.defaultProfile.linux": "Distrobox",
