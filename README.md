@@ -308,8 +308,8 @@ mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'yourpassw
     "git.autofetch": true,
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.analysis.extraPaths": [
-        "/home/lhjok/.local/lib/python3.11/site-packages",
-        "/home/lhjok/.local/lib/python3.10/site-packages"
+        "/home/lhjok/.local/share/pipx/shared/lib/python3.11/site-packages",
+        "/home/lhjok/.local/share/pipx/shared/lib/python3.10/site-packages"
     ],
     "[python]": {
         "editor.formatOnType": true
