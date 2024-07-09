@@ -48,7 +48,7 @@ export PATH="$GOPATH/bin:$PATH"
 # 更新整个系统和安装常用工具
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install git aria2 python311-pipx \
-libgccjit0 libtree-sitter0
+libgccjit0 libtree-sitter0 libvterm0
 ```
 
 - 系统个人偏好设置：
