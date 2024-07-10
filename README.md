@@ -54,6 +54,8 @@ libgccjit0 libtree-sitter0 libvterm0
 - 系统个人偏好设置：
 
 ```sh
+# 更改主机名称(永久生效)
+$ sudo hostnamectl set-hostname aeon
 # 执行下面命令后，在软件仓库设置开启第三方Flathub源。
 $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 $ flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
@@ -69,7 +71,7 @@ $ vim ~/.local/share/gnome-shell/extensions/kimpanel@kde.org/stylesheet.css
 # 在以上CSS样式中各添加下面两行。
 #   border-radius: 5px;
 #   padding: 1px 5px 2px 4px;
-##################################################
+###################################################
 # .popup-menu-boxpointer.kimpanel-popup-boxpointer
 # .popup-menu-content.kimpanel-popup-content
 # 在以上CSS样式中各添加下面一行。
