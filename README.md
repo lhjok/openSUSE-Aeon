@@ -182,7 +182,7 @@ $ make install
 - 容器工具的使用：
 
 ```sh
-$ distrobox create -n opensuse     //创建一个默认容器
+$ distrobox create --name opensuse     //创建一个默认容器
 $ distrobox enter opensuse     //进入容器环境
 --------------------------------------------------------------------------------------
 $ distrobox create --image docker.io/gentoo/stage3 --name gentoo  //创建指定系统版本容器
