@@ -40,6 +40,8 @@ export PATH="$HOME/.opt/go/bin:$PATH"
 export PATH="$HOME/.opt/neovim/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH:$HOME/.npm-global/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 ```
 
 - 本地系统安装常用工具：
@@ -108,6 +110,7 @@ $ flatpak install flathub com.jetbrains.WebStorm
 $ flatpak install flathub com.jetbrains.RustRover
 $ flatpak install flathub com.jetbrains.GoLand
 $ flatpak install flathub org.blender.Blender
+$ flatpak install flathub org.gnome.eog
 $ flatpak install flathub io.mpv.Mpv
 $ flatpak install flathub com.skype.Client
 $ flatpak install flathub com.baidu.NetDisk
