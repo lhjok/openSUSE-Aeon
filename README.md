@@ -33,6 +33,7 @@
 
 ```sh
 export NVM_DIR="$HOME/.nvm"
+export BUN_INSTALL="$HOME/.bun"
 export GOPATH="$HOME/.golang"
 export JAVA_HOME="$HOME/.opt/jdk"
 export PATH="$JAVA_HOME/bin:$PATH"
@@ -40,6 +41,7 @@ export PATH="$HOME/.opt/go/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 ```
