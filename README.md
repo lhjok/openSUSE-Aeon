@@ -174,16 +174,6 @@ $ sudo transactional-update shell    //在新的快照中使用zypper包管理�
 $ sudo transactional-update rollback snapshot_number    //回滚到指定版本(重启后生效)
 ```
 
-- 本地编译安装NeoVim编辑器：
-
-```sh
-$ pip3 install pynvim
-$ git clone https://github.com/neovim/neovim.git
-$ cd neovim
-$ make CMAKE_INSTALL_PREFIX=/home/lhjok/.opt/neovim/
-$ make install
-```
-
 - 容器工具的使用：
 
 ```sh
