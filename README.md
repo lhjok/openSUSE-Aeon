@@ -51,8 +51,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 ```sh
 # 更新整个系统和安装常用工具
 $ sudo transactional-update dup
-$ sudo transactional-update pkg install git aria2 python311-pipx \
-libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel
+$ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 python311-pipx \
+libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel libvterm-devel gtk3-devel
 ```
 
 - 系统个人偏好设置：
