@@ -86,46 +86,46 @@ $ vim ~/.local/share/gnome-shell/extensions/kimpanel@kde.org/stylesheet.css
 - 安装各种应用程序：
 
 ```sh
-$ flatpak install flathub com.google.Chrome
-$ flatpak install flathub com.microsoft.Edge
-$ flatpak install flathub com.visualstudio.code
-$ flatpak install flathub com.valvesoftware.Steam
-$ flatpak install flathub com.qq.QQ
-$ flatpak install flathub com.qq.QQmusic
-$ flatpak install flathub com.tencent.WeChat
-$ flatpak install flathub com.tencent.wemeet
-$ flatpak install flathub org.telegram.desktop
-$ flatpak install flathub tv.kodi.Kodi
-$ flatpak install flathub org.gimp.GIMP
-$ flatpak install flathub net.xmind.XMind
-$ flatpak install flathub com.wps.Office
-$ flatpak install flathub com.discordapp.Discord
-$ flatpak install flathub io.beekeeperstudio.Studio
-$ flatpak install flathub org.dbgate.DbGate
-$ flatpak install flathub io.podman_desktop.PodmanDesktop
-$ flatpak install flathub io.gitlab.adhami3310.Impression
-$ flatpak install flathub io.github.shiftey.Desktop
-$ flatpak install flathub org.mozilla.Thunderbird
-$ flatpak install flathub com.redis.RedisInsight
-$ flatpak install flathub com.jetbrains.PyCharm-Professional
-$ flatpak install flathub com.jetbrains.WebStorm
-$ flatpak install flathub com.jetbrains.RustRover
-$ flatpak install flathub com.jetbrains.GoLand
-$ flatpak install flathub org.blender.Blender
-$ flatpak install flathub org.gnome.eog
-$ flatpak install flathub io.mpv.Mpv
-$ flatpak install flathub com.skype.Client
-$ flatpak install flathub com.baidu.NetDisk
-$ flatpak install flathub io.bassi.Amberol
+$ flatpak install --user flathub com.google.Chrome
+$ flatpak install --user flathub com.microsoft.Edge
+$ flatpak install --user flathub com.visualstudio.code
+$ flatpak install --user flathub com.valvesoftware.Steam
+$ flatpak install --user flathub com.qq.QQ
+$ flatpak install --user flathub com.qq.QQmusic
+$ flatpak install --user flathub com.tencent.WeChat
+$ flatpak install --user flathub com.tencent.wemeet
+$ flatpak install --user flathub org.telegram.desktop
+$ flatpak install --user flathub tv.kodi.Kodi
+$ flatpak install --user flathub org.gimp.GIMP
+$ flatpak install --user flathub net.xmind.XMind
+$ flatpak install --user flathub com.wps.Office
+$ flatpak install --user flathub com.discordapp.Discord
+$ flatpak install --user flathub io.beekeeperstudio.Studio
+$ flatpak install --user flathub org.dbgate.DbGate
+$ flatpak install --user flathub io.podman_desktop.PodmanDesktop
+$ flatpak install --user flathub io.gitlab.adhami3310.Impression
+$ flatpak install --user flathub io.github.shiftey.Desktop
+$ flatpak install --user flathub org.mozilla.Thunderbird
+$ flatpak install --user flathub com.redis.RedisInsight
+$ flatpak install --user flathub com.jetbrains.PyCharm-Professional
+$ flatpak install --user flathub com.jetbrains.WebStorm
+$ flatpak install --user flathub com.jetbrains.RustRover
+$ flatpak install --user flathub com.jetbrains.GoLand
+$ flatpak install --user flathub org.blender.Blender
+$ flatpak install --user flathub org.gnome.eog
+$ flatpak install --user flathub io.mpv.Mpv
+$ flatpak install --user flathub com.skype.Client
+$ flatpak install --user flathub com.baidu.NetDisk
+$ flatpak install --user flathub io.bassi.Amberol
 ```
 
 - 安装Fcitx5输入法并开机启动：
 
 ```sh
 $ flatpak update  //升级所有Flatpak应用和依赖
-$ flatpak install flathub org.fcitx.Fcitx5
-$ flatpak install flathub org.fcitx.Fcitx5.Addon.Rime
-$ flatpak install flathub com.dropbox.Client
+$ flatpak install --user flathub org.fcitx.Fcitx5
+$ flatpak install --user flathub org.fcitx.Fcitx5.Addon.Rime
+$ flatpak install --user flathub com.dropbox.Client
 $ sudo cp /home/lhjok/.local/share/flatpak/app/org.fcitx.Fcitx5/current/active/export/share\
 /applications/org.fcitx.Fcitx5.desktop /etc/xdg/autostart/
 $ sudo cp /home/lhjok/.local/share/flatpak/app/com.dropbox.Client/current/active/export/share\
