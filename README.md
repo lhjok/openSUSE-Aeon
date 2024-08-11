@@ -29,7 +29,7 @@
 
 #### 添加PATH环境变量
 
-- 编辑 `vim ~/.bash_profile` `vim ~/.bashrc` 设置环境变量：
+- 编辑 `vim ~/.bashrc` 设置环境变量：
 
 ```sh
 export NVM_DIR="$HOME/.nvm"
@@ -63,6 +63,8 @@ $ sudo hostnamectl set-hostname aeon
 # 执行下面命令后，在软件仓库设置开启第三方Flathub源。
 $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 $ flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+# 设置GDM支持HIDPI显示，先在GNOME设置好缩放比例。
+$ sudo cp ~/.config/monitors.xml /var/lib/gdm/.config/
 #################################################################################
 # https://extensions.gnome.org/extension/261/kimpanel/    // 安装Kimpanel面板插件
 #################################################################################
@@ -171,6 +173,7 @@ $ sudo transactional-update dup    //执行系统更新(重启后生效)
 $ sudo transactional-update cleanup    //删除旧快照(重启后生效)
 $ sudo transactional-update --help    //查看帮助文档
 $ sudo transactional-update shell    //在新的快照中使用zypper包管理工具(重启后生效)
+$ sudo snapper list    //查看快照列表以及快照版本详情(不要使用Snapper进行回滚)
 $ sudo transactional-update rollback snapshot_number    //回滚到指定版本(重启后生效)
 ```
 
@@ -186,6 +189,7 @@ $ distrobox enter gentoo  //进入容器环境
 $ distrobox list     //查看容器列表
 $ distrobox stop 容器名     //停止容器
 $ distrobox rm 容器名     //删除容器
+$ podman rmi 镜像ID     //删除镜像
 ```
 
 #### 配置开发环境
