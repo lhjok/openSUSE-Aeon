@@ -51,8 +51,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 ```sh
 # 更新整个系统和安装常用工具
 $ sudo transactional-update dup
-$ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 python311-pipx \
-libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel libvterm-devel gtk3-devel
+$ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 \
+python311-pipx libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel \
+libvterm-devel gtk3-devel
 ```
 
 - 系统个人偏好设置：
@@ -159,37 +160,48 @@ export XMODIFIERS=@im=fcitx
 - 本地系统安装 `Virt-Manager` 虚拟机：
 
 ```sh
+# 开启Systemd-Boot版IOMMU显卡直通
+$ sudo vim /etc/kernel/cmdline
+#################################################################################
+# intel_iommu=on iommu=pt    # 添加在最后面（等待系统自动更新后激活）
+# sudo dmesg | grep IOMMU    # 看到(DMAR: IOMMU enabled)表示已经激活
+#################################################################################
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
-qemu-tools virt-install libvirt-daemon-config-network virt-manager virt-viewer
+qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
+libvirglrenderer1 qemu-hw-display-virtio-gpu
+#################################################################################
+$ sudo virsh net-list --all    # 查看虚拟网络列表
+$ sudo virsh net-start --network default    # 启动default不活跃的网络
+$ sudo virsh net-autostart --network default    # 自动启动default不活跃的网络
 ```
 
 - 升级和回滚系统：
 
 ```sh
-$ sudo transactional-update pkg install package_name    //安装系统包(重启后生效)
-$ sudo transactional-update --continue 9 pkg install package_name  //在指定快照安装包(不用重启可生效)
-$ sudo transactional-update pkg remove package_name    //删除单个包(重启后生效)
-$ sudo transactional-update dup    //执行系统更新(重启后生效)
-$ sudo transactional-update cleanup    //删除旧快照(重启后生效)
-$ sudo transactional-update --help    //查看帮助文档
-$ sudo transactional-update shell    //在新的快照中使用zypper包管理工具(重启后生效)
-$ sudo snapper list    //查看快照列表以及快照版本详情(不要使用Snapper进行回滚)
-$ sudo transactional-update rollback snapshot_number    //回滚到指定版本(重启后生效)
+$ sudo transactional-update pkg install package_name    #安装系统包(重启后生效)
+$ sudo transactional-update --continue 9 pkg install package_name  #在指定快照安装包
+$ sudo transactional-update pkg remove package_name    #删除单个包(重启后生效)
+$ sudo transactional-update dup    #执行系统更新(重启后生效)
+$ sudo transactional-update cleanup    #删除旧快照(重启后生效)
+$ sudo transactional-update --help    #查看帮助文档
+$ sudo transactional-update shell    #在新的快照中使用zypper包管理工具(重启后生效)
+$ sudo snapper list    #查看快照列表以及快照版本详情(不要使用Snapper进行回滚)
+$ sudo transactional-update rollback snapshot_number    #回滚到指定版本(重启后生效)
 ```
 
 - 容器工具的使用：
 
 ```sh
-$ distrobox create --name opensuse     //创建一个默认容器
-$ distrobox enter opensuse     //进入容器环境
+$ distrobox create --name opensuse     #创建一个默认容器
+$ distrobox enter opensuse     #进入容器环境
 --------------------------------------------------------------------------------------
-$ distrobox create --image docker.io/gentoo/stage3 --name gentoo  //创建指定系统版本容器
-$ distrobox enter gentoo  //进入容器环境
+$ distrobox create --image docker.io/gentoo/stage3 --name gentoo  #创建指定系统版本容器
+$ distrobox enter gentoo  #进入容器环境
 --------------------------------------------------------------------------------------
-$ distrobox list     //查看容器列表
-$ distrobox stop 容器名     //停止容器
-$ distrobox rm 容器名     //删除容器
-$ podman rmi 镜像ID     //删除镜像
+$ distrobox list     #查看容器列表
+$ distrobox stop 容器名     #停止容器
+$ distrobox rm 容器名     #删除容器
+$ podman rmi 镜像ID     #删除镜像
 ```
 
 #### 配置开发环境
