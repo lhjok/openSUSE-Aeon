@@ -163,13 +163,13 @@ export XMODIFIERS=@im=fcitx
 # 开启Systemd-Boot版IOMMU显卡直通
 $ sudo vim /etc/kernel/cmdline
 #################################################################################
-# intel_iommu=on iommu=pt    # 添加在最后面（等待系统自动更新后激活）
-# sudo dmesg | grep IOMMU    # 看到(DMAR: IOMMU enabled)表示已经激活
+# intel_iommu=on iommu=pt    # 添加在最后面（等待下一次系统更新后激活）
 #################################################################################
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
-libvirglrenderer1 qemu-hw-display-virtio-gpu
+libvirglrenderer1 qemu-hw-display-virtio-gpu    # 执行完成后重启(激活IOMMU)
 #################################################################################
+$ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
 $ sudo virsh net-list --all    # 查看虚拟网络列表
 $ sudo virsh net-start --network default    # 启动default不活跃的网络
 $ sudo virsh net-autostart --network default    # 自动启动default不活跃的网络
