@@ -161,7 +161,8 @@ export XMODIFIERS=@im=fcitx
 
 ```sh
 # 开启IOMMU显卡直通
-$ sudo vim /etc/kernel/cmdline    # Systemd-Boot
+# 开机BIOS启用VT-d和启用核心显卡(非Auto)
+$ sudo vim /etc/kernel/cmdline    # 使用Systemd-Boot引导
 ##################################################################################
 # intel_iommu=on iommu=pt rd.driver.pre=vfio-pci    # 添加在最后面（系统更新后激活）
 ##################################################################################
