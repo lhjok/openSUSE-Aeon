@@ -160,15 +160,35 @@ export XMODIFIERS=@im=fcitx
 - 本地系统安装 `Virt-Manager` 虚拟机：
 
 ```sh
-# 开启Systemd-Boot版IOMMU显卡直通
-$ sudo vim /etc/kernel/cmdline
+# 开启IOMMU显卡直通
+$ sudo vim /etc/kernel/cmdline    # Systemd-Boot
 ##################################################################################
-# intel_iommu=on iommu=pt    # 添加在最后面（等待下一次系统更新后激活）
+# intel_iommu=on iommu=pt rd.driver.pre=vfio-pci    # 添加在最后面（系统更新后激活）
+##################################################################################
+$ sudo vim /etc/modprobe.d/vfio.conf
+##################################################################################
+# options vfio-pci ids=8086:1912    # 直通核心显卡
+# options vfio-pci ids=1002:67df,1002:aaf0    # 直通RX580显卡
+##################################################################################
+$ sudo vim /etc/modules-load.d/vfio-pci.conf    # 将驱动程序添加到自动加载模块列表
+##################################################################################
+pci_stub
+vfio
+vfio_iommu_type1
+vfio_pci
+kvm
+kvm_intel
+##################################################################################
+$ sudo vim /etc/modprobe.d/kvm.conf    # 为Windows客户机禁用MSR
+##################################################################################
+# options kvm ignore_msrs=1
 ##################################################################################
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
-libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer  #重启激活IOMMU
+libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer pciutils \
+qemu-hw-display-virtio-gpu-pci  #重启后激活IOMMU
 ##################################################################################
+$ sudo dmesg | grep VFIO    # 重启后查看VFIO-PCI是否激活
 $ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
 $ sudo virsh net-list --all    # 查看虚拟网络列表
 $ sudo virsh net-start --network default    # 启动default不活跃的网络
