@@ -182,7 +182,7 @@ $ sudo vim /etc/modprobe.d/kvm.conf    # 为Windows客户机禁用MSR
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
 libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer pciutils \
-qemu-hw-display-virtio-gpu-pci  #重启后激活IOMMU
+qemu-hw-display-virtio-gpu-pci    #重启后激活IOMMU
 ##################################################################################
 $ sudo dmesg | grep VFIO    # 重启后查看VFIO-PCI是否激活
 $ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
