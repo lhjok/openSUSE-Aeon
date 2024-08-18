@@ -182,10 +182,14 @@ $ sudo vim /etc/modprobe.d/kvm.conf    # 为Windows客户机禁用MSR
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
 libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer pciutils \
-qemu-hw-display-virtio-gpu-pci    #重启后激活IOMMU
+qemu-hw-display-virtio-gpu-pci qemu-hw-usb-host qemu-ovmf-x86_64   #重启后激活IOMMU
 ##################################################################################
 $ sudo dmesg | grep VFIO    # 重启后查看VFIO-PCI是否激活
 $ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
+$ sudo usermod -aG libvirt lhjok    # 将当前用户添加到libvirt组
+$ sudo usermod -aG kvm lhjok    # 将当前用户添加到kvm组
+$ sudo systemctl restart libvirtd.service    # 开启libvirtd服务
+$ sudo systemctl enable libvirtd.service    # 开机启动libvirtd服务
 $ sudo virsh net-list --all    # 查看虚拟网络列表
 $ sudo virsh net-start --network default    # 启动default不活跃的网络
 $ sudo virsh net-autostart --network default    # 自动启动default不活跃的网络
