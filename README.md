@@ -53,7 +53,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 \
 python311-pipx libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel \
-libvterm-devel gtk3-devel
+libvterm-devel gtk3-devel libXpresent1 libsamplerate
 ```
 
 - 系统个人偏好设置：
@@ -182,8 +182,7 @@ $ sudo vim /etc/modprobe.d/kvm.conf    # 为Windows客户机禁用MSR
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
 libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer pciutils \
-qemu-hw-display-virtio-gpu-pci qemu-hw-usb-host qemu-ovmf-x86_64 \
-libXpresent1 libsamplerate  #重启后激活IOMMU
+qemu-hw-display-virtio-gpu-pci qemu-hw-usb-host qemu-ovmf-x86_64  #重启后激活IOMMU
 ##################################################################################
 $ sudo dmesg | grep VFIO    # 重启后查看VFIO-PCI是否激活
 $ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
@@ -237,7 +236,7 @@ $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
 # 打开:设备管理器->系统设备->PCI内存控制器->更新驱动->（Virtio）-> win10
 # 管理员执行安装：（Looking-Glass）-> looking-glass-host-setup
 # 安装AnyDesk远程桌面并设置远程控制密码，记录好远程登录码，安装完后关机。
-# 在Virt-Manager虚拟机管理器，选择->查看->详情，删除显卡设备或设置显卡为None。
+# 在Virt-Manager虚拟机管理器，选择->查看->详情，删除显卡设备。
 ##########################################################################
 # 三、安装Looking-Glass客户端：
 # 编译Looking-Glass后，把(looking-glass-client)放到(~/.local/bin)。
@@ -248,7 +247,7 @@ $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
 $ vim ~/.config/looking-glass/client.ini
 ##########################################################################
 # [win]
-# position=center
+# title=Looking Glass
 # size=960x540
 # jitRender=yes
 # dontUpscale=yes
