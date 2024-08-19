@@ -182,7 +182,8 @@ $ sudo vim /etc/modprobe.d/kvm.conf    # 为Windows客户机禁用MSR
 $ sudo transactional-update pkg install libvirt libvirt-daemon-qemu \
 qemu-tools virt-install libvirt-daemon-config-network virt-manager qemu-spice \
 libvirglrenderer1 qemu-hw-display-virtio-gpu spice-gtk virt-viewer pciutils \
-qemu-hw-display-virtio-gpu-pci qemu-hw-usb-host qemu-ovmf-x86_64   #重启后激活IOMMU
+qemu-hw-display-virtio-gpu-pci qemu-hw-usb-host qemu-ovmf-x86_64 \
+libXpresent1 libsamplerate  #重启后激活IOMMU
 ##################################################################################
 $ sudo dmesg | grep VFIO    # 重启后查看VFIO-PCI是否激活
 $ sudo dmesg | grep IOMMU    # 重启后查看(IOMMU enabled)表示已经激活
@@ -193,6 +194,67 @@ $ sudo systemctl enable libvirtd.service    # 开机启动libvirtd服务
 $ sudo virsh net-list --all    # 查看虚拟网络列表
 $ sudo virsh net-start --network default    # 启动default不活跃的网络
 $ sudo virsh net-autostart --network default    # 自动启动default不活跃的网络
+```
+
+- 安装和配置 `Looking-Glass` 共享直通KVM显示器：
+
+```sh
+# 一、安装Windows10虚拟机，选择在安装前自定义配置。
+# 更改磁盘和网卡为VirtIO驱动，引导选项调整系统盘为第一位。
+# 1、添加硬件->存储->设备类型(CDROM设备)->virtio-win.iso
+# 2、添加硬件->控制器->SCSI->VirtIO SCSI
+# 3、添加硬件->PCI主机设备->Intel Corporation Graphics 530
+# 安装系统时依次安装所需virtio-win.iso内的驱动。
+# 系统安装完成后等待显卡驱动自动安装，显卡驱动安装完成后关机。
+# 编辑Windows10配置文件（会检查配置文件是否错误）
+$ sudo virsh edit Windows10
+###########################################################
+# <features>
+  # <hyperv>
+    <vendor_id state='on' value='whatever'/>
+  # </hyperv>
+  <kvm>
+    <hidden state='on'/>
+  </kvm>
+# </features>
+###########################################################
+# <devices>
+  <shmem name='looking-glass'>
+    <model type='ivshmem-plain'/>
+    <size unit='M'>32</size>
+  </shmem>
+# </devices>
+###########################################################
+$ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
+###########################################################
+# touch /dev/shm/looking-glass
+# chown lhjok:kvm /dev/shm/looking-glass
+# chmod 660 /dev/shm/looking-glass
+##########################################################################
+# 二、启动Windows10虚拟机并下载：
+# looking-glass-host-B6.zip   #解压文件（Looking-Glass）
+# virtio-win10-prewhql-0.1-161.zip   #解压文件（Virtio）
+# 打开:设备管理器->系统设备->PCI内存控制器->更新驱动->（Virtio）-> win10
+# 管理员执行安装：（Looking-Glass）-> looking-glass-host-setup
+# 安装AnyDesk远程桌面并设置远程控制密码，记录好远程登录码，安装完后关机。
+# 在Virt-Manager虚拟机管理器，选择->查看->详情，删除显卡设备或设置显卡为None。
+##########################################################################
+# 三、安装Looking-Glass客户端：
+# 编译Looking-Glass后，把(looking-glass-client)放到(~/.local/bin)。
+# 开启Windows10虚拟机并使用AnyDesk远程打开，安装（virtio-win 和 spice）驱动：
+# (virtio-win-guest-tools.exe) 和 (spice-guest-tools-latest.exe)
+##########################################################################
+# 编辑Looking-Glass配置文件：
+$ vim ~/.config/looking-glass/client.ini
+##########################################################################
+# [win]
+# position=center
+# size=960x540
+# jitRender=yes
+# dontUpscale=yes
+##########################################################################
+$ looking-glass-client    # 启动Windows10虚拟机后执行该命令
+# 目前 Gnome Wayland 环境无法显示窗口标题栏
 ```
 
 - 升级和回滚系统：
