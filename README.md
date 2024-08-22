@@ -114,6 +114,8 @@ $ flatpak install --user flathub com.jetbrains.PyCharm-Professional
 $ flatpak install --user flathub com.jetbrains.WebStorm
 $ flatpak install --user flathub com.jetbrains.RustRover
 $ flatpak install --user flathub com.jetbrains.GoLand
+$ flatpak install --user flathub com.obsproject.Studio
+$ flatpak install --user flathub com.anydesk.Anydesk
 $ flatpak install --user flathub org.blender.Blender
 $ flatpak install --user flathub org.gnome.eog
 $ flatpak install --user flathub io.mpv.Mpv
@@ -143,6 +145,8 @@ $ systemctl mask --user org.freedesktop.IBus.session.generic.service
 $ mkdir -p .local/share/dbus-1/services
 $ ln -s /dev/null .local/share/dbus-1/services/org.freedesktop.IBus.service
 $ ln -s /dev/null .local/share/dbus-1/services/org.freedesktop.portal.IBus.service
+$ flatpak --user override com.valvesoftware.Steam --filesystem=/home/lhjok/.opt/steam
+# 添加Steam游戏存储空间，用户界面添加会提示（磁盘写入错误）。
 ```
 
 - 编辑 `sudo vim /etc/profile` 设置输入法（默认可不用设置）：
@@ -266,6 +270,7 @@ $ looking-glass-client    # 启动Windows10虚拟机后执行该命令
 - 升级和回滚系统：
 
 ```sh
+# 注意：开机选择启动快照并非是持久性回滚，切勿使用Snapper工具回滚或删除快照。
 $ sudo transactional-update pkg install package_name    #安装系统包(重启后生效)
 $ sudo transactional-update --continue 9 pkg install package_name  #在指定快照安装包
 $ sudo transactional-update pkg remove package_name    #删除单个包(重启后生效)
@@ -275,6 +280,7 @@ $ sudo transactional-update --help    #查看帮助文档
 $ sudo transactional-update shell    #在新的快照中使用zypper包管理工具(重启后生效)
 $ sudo snapper list    #查看快照列表以及快照版本详情(不要使用Snapper进行回滚)
 $ sudo transactional-update rollback snapshot_number    #回滚到指定版本(重启后生效)
+# 回滚到指定版本是持久性回滚，在下一次更新到来时会持续不变，而下一次更新也是基于该版本。
 ```
 
 - 容器工具的使用：
