@@ -169,8 +169,8 @@ export XMODIFIERS=@im=fcitx
 $ sudo vim /etc/kernel/cmdline    # 使用Systemd-Boot引导
 ##################################################################################
 # 添加在最后面（系统更新后激活）
-# intel_iommu=on iommu=pt rd.driver.pre=vfio-pci vfio-pci.ids=8086:1912 \
-# video=efifb:off,simplefb:off,vesa:off,vesafb:off disable_vga=1
+# intel_iommu=on iommu=pt rd.driver.pre=vfio-pci video=efifb:off \
+# vfio-pci.ids=8086:1912,1002:67df,1002:aaf0    # （可选参数）下面的设置效果一样。
 ##################################################################################
 $ sudo vim /etc/modprobe.d/vfio.conf
 ##################################################################################
