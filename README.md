@@ -265,7 +265,7 @@ $ vim ~/.config/looking-glass/client.ini
 ##########################################################################
 $ looking-glass-client    # 启动Windows10虚拟机后执行该命令
 # 目前 Gnome Wayland 环境无法显示窗口标题栏
-$ vim /.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
+$ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # uri_default = "qemu:///system"
 ##########################################################################
 # 编辑Looking-Glass桌面文件：（Windows10快速启动）
