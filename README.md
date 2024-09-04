@@ -10,7 +10,7 @@
  在此过程结束时将它们恢复到您的全新Aeon安装。
 ```
 
-- 核心三大工具：`Distrobox` 容器工具 `Transactional-Update` 系统包管理器 `Flatpack` 桌面应用容器。
+- 核心三大工具：`Distrobox` 容器工具 `Transactional-Update` 系统管理器 `Flatpack` 桌面应用容器。
 
 ```text
  一、Distrobox，容器工具，生成无GUI的终端容器，与本地系统共享/home目录。
@@ -53,7 +53,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 \
 python311-pipx libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel \
-libvterm-devel gtk3-devel libXpresent1 libsamplerate
+libvterm-devel gtk3-devel libXpresent1 libsamplerate ucode-intel
 ```
 
 - 系统个人偏好设置：
@@ -168,7 +168,7 @@ export XMODIFIERS=@im=fcitx
 # 开机BIOS启用VT-d和启用核心显卡(非Auto)
 $ sudo vim /etc/kernel/cmdline    # 使用Systemd-Boot引导
 ##################################################################################
-# 添加在最后面（系统更新后激活）
+# 添加在最后面（系统更新后激活）切忌不可乱填，否则会黑屏开不了机。
 # intel_iommu=on iommu=pt i915.enable_gvt=1 rd.driver.pre=vfio-pci \
 # vfio-pci.ids=8086:1912    #（可选参数）下面的设置效果一样。
 ##################################################################################
@@ -256,7 +256,7 @@ $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
 $ vim ~/.config/looking-glass/client.ini
 ##########################################################################
 # [win]
-# title=Looking Glass
+# title=Windows10
 # size=1280x720
 # jitRender=yes
 # dontUpscale=yes
@@ -273,7 +273,7 @@ $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # Name=Looking Glass
 # GenericName=Looking Glass
 # Comment[zh_CN]=启动Windows虚拟机
-# Exec=bash -c "virsh start Windows10 && sleep 5 ; looking-glass-client"
+# Exec=bash -c "virsh start Windows10 && sleep 8 ; looking-glass-client"
 # Icon=/home/lhjok/.local/share/icons/looking-glass/glass.png
 # StartupWMClass=Looking Glass
 # Terminal=false
@@ -283,7 +283,7 @@ $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 - 升级和回滚系统：
 
 ```sh
-# 注意：开机选择启动快照并非是持久性回滚，切勿使用Snapper工具回滚或删除快照。
+# 注意：开机选择启动快照并非是持久性回滚，切勿使用Snapper工具进行回滚。
 $ sudo transactional-update pkg install package_name    #安装系统包(重启后生效)
 $ sudo transactional-update --continue 9 pkg install package_name  #在指定快照安装包
 $ sudo transactional-update pkg remove package_name    #删除单个包(重启后生效)
