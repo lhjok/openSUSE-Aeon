@@ -53,7 +53,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git aria2 \
 python311-pipx libgccjit0 libtree-sitter0 libvterm0 openssl-3 libopenssl-3-devel \
-libvterm-devel gtk3-devel libXpresent1 libsamplerate ucode-intel
+libvterm-devel gtk3-devel libXpresent1 libsamplerate ucode-intel wl-clipboard \
+lua51-luarocks ruby rubygem-bundler sqlite3-devel
 ```
 
 - 系统个人偏好设置：
