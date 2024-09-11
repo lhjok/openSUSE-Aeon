@@ -38,6 +38,7 @@ export GOPATH="$HOME/.golang"
 export JAVA_HOME="$HOME/.opt/jdk"
 export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$HOME/.opt/go/bin:$PATH"
+export PATH="$HOME/.opt/neovim/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
@@ -279,6 +280,17 @@ $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # StartupWMClass=Looking Glass
 # Terminal=false
 # Type=Application
+```
+
+- 本地编译安装NeoVim编辑器：
+
+```sh
+$ pip3 install pynvim
+$ git clone https://github.com/neovim/neovim.git
+$ cd neovim
+$ git checkout v0.10.1
+$ make CMAKE_INSTALL_PREFIX=/home/lhjok/.opt/neovim/
+$ make install
 ```
 
 - 升级和回滚系统：
