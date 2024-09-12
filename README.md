@@ -291,6 +291,55 @@ $ cd neovim
 $ git checkout v0.10.1
 $ make CMAKE_INSTALL_PREFIX=/home/lhjok/.opt/neovim/
 $ make install
+# 安装NeoVim发行版NvChad工作环境：
+$ git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+# :MasonInstallAll   # 下载完插件后运行命令
+# :checkhealth   # 检查是否提示安装错误信息
+$ git clone https://github.com/ryanoasis/nerd-fonts.git
+$ cd nerd-fonts
+$ ./install.sh JetBrainsMono   # 安装单个编程字体
+$ ./install.sh NerdFontsSymbolsOnly   # 安装单个编程图标
+```
+
+- 编辑NvChad配置风格文件：
+
+```lua
+-- vim ~/.config/nvim/lua/chadrc.lua
+local M = {
+  base46 = {
+    theme = "onedark"
+  },
+  ui = {
+    statusline = {
+      theme = "vscode_colored",
+    },
+    nvdash = {
+      load_on_startup = true,
+    },
+  }
+}
+return M
+```
+
+- 编辑NvChad配置快捷键文件：
+
+```lua
+-- vim ~/.config/nvim/lua/mappings.lua
+-- 把下面键绑定方案添加进本文件
+map("n", "<C-S>", ":w<CR>")
+map("v", "<C-S>", "<ESC>:w<CR>")
+map("i", "<C-S>", "<ESC>:w<CR>")
+map("n", "<C-A>", "ggVG")
+map("i", "<C-A>", "<ESC>ggVG")
+map("v", "<C-C>", '"+y')
+map("v", "<C-X>", '"+x')
+map("n", "<C-V>", '"+gP')
+map("v", "<C-V>", '"+gP')
+map("i", "<C-V>", "<C-R><C-O>+")
+map("n", "<C-Z>", "u")
+map("v", "<C-Z>", "<ESC>u")
+map("i", "<C-Z>", "<ESC>u")
+-- 把上面键绑定方案添加进本文件
 ```
 
 - 升级和回滚系统：
