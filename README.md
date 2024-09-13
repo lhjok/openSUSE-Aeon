@@ -301,10 +301,11 @@ $ ./install.sh JetBrainsMono   # 安装单个编程字体
 $ ./install.sh NerdFontsSymbolsOnly   # 安装单个编程图标
 ```
 
-- 编辑NvChad配置风格文件：
+- 编辑NvChad配置文件：
 
 ```lua
 -- vim ~/.config/nvim/lua/chadrc.lua
+-- 配置NvChad风格文件
 local M = {
   base46 = {
     theme = "onedark"
@@ -319,6 +320,14 @@ local M = {
   }
 }
 return M
+-- vim ~/.config/nvim/lua/plugins/init.lua
+-- 添加下面这段在(init.lua)文件
+{
+  'mrcjkb/rustaceanvim',
+  version = '^5',
+  lazy = false,
+}
+-- 添加上面这段在(init.lua)文件
 ```
 
 - 编辑NvChad配置快捷键文件：
