@@ -69,7 +69,8 @@ $ flatpak remote-add flathub-beta https://flathub.org/beta-repo/flathub-beta.fla
 # 设置GDM支持HIDPI显示，先在GNOME设置好缩放比例。
 $ sudo cp ~/.config/monitors.xml /var/lib/gdm/.config/
 #################################################################################
-# https://extensions.gnome.org/extension/261/kimpanel/    // 安装Kimpanel面板插件
+$ flatpak install --user flathub com.mattjakeman.ExtensionManager
+# 搜索（Input Method Panel）插件并安装Kimpanel面板插件。
 #################################################################################
 # 安装了kimpanel输入法状态管理的配置。
 $ vim ~/.local/share/gnome-shell/extensions/kimpanel@kde.org/stylesheet.css
@@ -534,7 +535,5 @@ mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'yourpassw
 $ nmcli connection add ifname vnet0 type bridge con-name vnet0 connection.zone trusted
 $ nmcli connection add type bridge-slave ifname enp0s31f6 master vnet0
 $ nmcli connection modify vnet0 bridge.stp yes
-$ nmcli connection modify enp0s31f6 autoconnect no
-$ nmcli connection down enp0s31f6
 $ nmcli connection up id vnet0
 ```
