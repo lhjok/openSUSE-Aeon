@@ -241,14 +241,39 @@ $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
 # chmod 660 /dev/shm/looking-glass
 ##########################################################################
 # 二、启动Windows10虚拟机并下载：
-# looking-glass-host-B6.zip   #解压文件（Looking-Glass）
+# looking-glass-host-B7.zip   #解压文件（Looking-Glass）
 # virtio-win10-prewhql-0.1-161.zip   #解压文件（Virtio）
 # 打开:设备管理器->系统设备->PCI内存控制器->更新驱动->（Virtio）-> win10
 # 管理员执行安装：（Looking-Glass）-> looking-glass-host-setup
 # 安装AnyDesk远程桌面并设置远程控制密码，记录好远程登录码，安装完后关机。
 # 在Virt-Manager虚拟机管理器，选择->查看->详情，删除显卡设备或设置NONE。
-##########################################################################
-# 三、安装Looking-Glass客户端：
+##################################################################################
+# 三、安装Looking-Glass依赖包：
+$ sudo transactional-update pkg install zlib-devel-static spice-protocol-devel \
+libnettle-devel libXScrnSaver-devel libXpresent-devel pipewire-devel \
+pulseaudio-devel libsamplerate-devel libsamplerate0 binutils-devel libXpresent1 \
+Mesa-libGLESv3-devel Mesa-libGL-devel Mesa-libEGL-devel Mesa-devel \
+Mesa-libEGL-devel Mesa-libGL-devel Mesa-libGLESv1_CM-devel Mesa-libGLESv2-devel \
+libzstd-devel-static fuse3-devel libunwind-devel libdw-devel
+##################################################################################
+# 四、克隆Looking-Glass官方源代码：
+$ git clone https://github.com/gnif/LookingGlass.git
+$ cd LookingGlass
+$ git checkout B7  # (可选)指定版本
+$ git submodule update --init --recursive
+##################################################################################
+# 四、编译Looking-Glass客户端：
+$ mkdir client/build
+$ cd client/build
+$ cmake ../ -DCMAKE_C_COMPILER=gcc
+$ make
+##################################################################################
+# 五、编译Looking-Glass主机端：
+$ mkdir host/build
+$ cd host/build
+$ cmake .. -DCMAKE_C_COMPILER=gcc
+$ make
+##################################################################################
 # 编译Looking-Glass后，把(looking-glass-client)放到(~/.local/bin)。
 # 开启Windows10虚拟机并使用AnyDesk远程打开，安装（virtio-win 和 spice）驱动：
 # (virtio-win-guest-tools.exe) 和 (spice-guest-tools-latest.exe)
