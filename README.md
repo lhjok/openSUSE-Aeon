@@ -213,11 +213,13 @@ $ sudo virsh net-autostart --network default    # 自动启动default不活跃�
 # 1、添加硬件->存储->设备类型(CDROM设备)->virtio-win.iso
 # 2、添加硬件->控制器->SCSI->VirtIO SCSI
 # 3、添加硬件->PCI主机设备->Intel Corporation Graphics 530
+# 4、添加硬件->通道->名称(com.redhat.spice.0)->设备类型(Spice代理(spicevmc))
+# 5、添加硬件->USB主机设备->（选择空余鼠标设备）
 # 安装系统时依次安装所需virtio-win.iso内的驱动。
 # 系统安装完成后等待显卡驱动自动安装，显卡驱动安装完成后关机。
 # 编辑Windows10配置文件（会检查配置文件是否错误）
 $ sudo virsh edit Windows10
-###########################################################
+##########################################################################
 # <features>
   # <hyperv>
     <vendor_id state='on' value='whatever'/>
@@ -226,19 +228,24 @@ $ sudo virsh edit Windows10
     <hidden state='on'/>
   </kvm>
 # </features>
-###########################################################
+##########################################################################
 # <devices>
   <shmem name='looking-glass'>
     <model type='ivshmem-plain'/>
     <size unit='M'>32</size>
   </shmem>
 # </devices>
-###########################################################
+##########################################################################
 $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
-###########################################################
+##########################################################################
 # touch /dev/shm/looking-glass
 # chown lhjok:kvm /dev/shm/looking-glass
 # chmod 660 /dev/shm/looking-glass
+$ sudo vim /etc/tmpfiles.d/looking-glass.conf
+# f /dev/shm/looking-glass 0660 lhjok kvm -
+$ sudo semanage fcontext -a -t svirt_tmpfs_t /dev/shm/looking-glass
+$ sudo systemd-tmpfiles --create /etc/tmpfiles.d/looking-glass.conf
+$ sudo restorecon -v /dev/shm/looking-glass
 ##########################################################################
 # 二、启动Windows10虚拟机并下载：
 # looking-glass-host-B7.zip   #解压文件（Looking-Glass）
@@ -262,13 +269,13 @@ $ cd LookingGlass
 $ git checkout B7  # (可选)指定版本
 $ git submodule update --init --recursive
 ##################################################################################
-# 四、编译Looking-Glass客户端：
+# 五、编译Looking-Glass客户端：
 $ mkdir client/build
 $ cd client/build
 $ cmake ../ -DCMAKE_C_COMPILER=gcc
 $ make
 ##################################################################################
-# 五、编译Looking-Glass主机端：
+# 六、编译Looking-Glass主机端：
 $ mkdir host/build
 $ cd host/build
 $ cmake .. -DCMAKE_C_COMPILER=gcc
