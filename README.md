@@ -219,7 +219,7 @@ $ sudo virsh net-autostart --network default    # 自动启动default不活跃�
 # 系统安装完成后等待显卡驱动自动安装，显卡驱动安装完成后关机。
 # 编辑Windows10配置文件（会检查配置文件是否错误）
 $ sudo virsh edit Windows10
-##########################################################################
+##################################################################################
 # <features>
   # <hyperv>
     <vendor_id state='on' value='whatever'/>
@@ -228,16 +228,16 @@ $ sudo virsh edit Windows10
     <hidden state='on'/>
   </kvm>
 # </features>
-##########################################################################
+##################################################################################
 # <devices>
   <shmem name='looking-glass'>
     <model type='ivshmem-plain'/>
     <size unit='M'>32</size>
   </shmem>
 # </devices>
-##########################################################################
+##################################################################################
 $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
-##########################################################################
+##################################################################################
 # touch /dev/shm/looking-glass
 # chown lhjok:kvm /dev/shm/looking-glass
 # chmod 660 /dev/shm/looking-glass
@@ -246,7 +246,7 @@ $ sudo vim /etc/tmpfiles.d/looking-glass.conf
 $ sudo semanage fcontext -a -t svirt_tmpfs_t /dev/shm/looking-glass
 $ sudo systemd-tmpfiles --create /etc/tmpfiles.d/looking-glass.conf
 $ sudo restorecon -v /dev/shm/looking-glass
-##########################################################################
+##################################################################################
 # 二、启动Windows10虚拟机并下载：
 # looking-glass-host-B7.zip   #解压文件（Looking-Glass）
 # virtio-win10-prewhql-0.1-161.zip   #解压文件（Virtio）
@@ -284,29 +284,32 @@ $ make
 # 编译Looking-Glass后，把(looking-glass-client)放到(~/.local/bin)。
 # 开启Windows10虚拟机并使用AnyDesk远程打开，安装（virtio-win 和 spice）驱动：
 # (virtio-win-guest-tools.exe) 和 (spice-guest-tools-latest.exe)
-##########################################################################
+##################################################################################
 # 编辑Looking-Glass配置文件：
 $ vim ~/.config/looking-glass/client.ini
-##########################################################################
+##################################################################################
 # [win]
 # title=Windows10
 # size=1280x720
 # jitRender=yes
 # dontUpscale=yes
-##########################################################################
+# [spice]
+# enable=yes
+# clipboard=yes
+##################################################################################
 # 设置显示器大小：size=960x540(1080P-1K)  size=1280x720(1440P-2K) 
-##########################################################################
+##################################################################################
 $ looking-glass-client    # 启动Windows10虚拟机后执行该命令
 # 目前 Gnome Wayland 环境无法显示窗口标题栏
 $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # uri_default = "qemu:///system"
-##########################################################################
+##################################################################################
 # 编辑Looking-Glass桌面文件：（Windows10快速启动）
 # [Desktop Entry]
 # Name=Looking Glass
 # GenericName=Looking Glass
 # Comment[zh_CN]=启动Windows虚拟机
-# Exec=bash -c "virsh start Windows10 && sleep 8 ; looking-glass-client"
+# Exec=bash -c "virsh start Windows10 && sleep 9 ; looking-glass-client"
 # Icon=/home/lhjok/.local/share/icons/looking-glass/glass.png
 # StartupWMClass=Looking Glass
 # Terminal=false
