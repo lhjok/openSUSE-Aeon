@@ -55,7 +55,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 $ sudo transactional-update dup
 $ sudo transactional-update pkg install cmake gcc-c++ clang clang-devel git \
 python311-pipx libgccjit0 libvterm0 libopenssl-3-devel libvterm-devel gtk3-devel \
-wl-clipboard ruby sqlite3-devel host-spawn fish
+wl-clipboard ruby sqlite3-devel host-spawn fish kernel-default-devel
 ```
 
 - 系统个人偏好设置：
@@ -219,7 +219,7 @@ $ sudo virsh net-autostart --network default    # 自动启动default不活跃�
 # 系统安装完成后等待显卡驱动自动安装，显卡驱动安装完成后关机。
 # 编辑Windows10配置文件（会检查配置文件是否错误）
 $ sudo virsh edit Windows10
-##################################################################################
+########################################################################################
 # <features>
   # <hyperv>
     <vendor_id state='on' value='whatever'/>
@@ -228,25 +228,46 @@ $ sudo virsh edit Windows10
     <hidden state='on'/>
   </kvm>
 # </features>
-##################################################################################
+#####【这是首要选项】#####################################################################
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <qemu:commandline>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='{"driver":"ivshmem-plain","id":"shmem0","memdev":"looking-glass"}'/>
+    <qemu:arg value='-object'/>
+    <qemu:arg value='{"qom-type":"memory-backend-file","id":"looking-glass","mem-path":"/dev/kvmfr0","size":67108864,"share":true}'/>
+  </qemu:commandline>
+</domain>
+#####【这是备用选项】#####################################################################
 # <devices>
   <shmem name='looking-glass'>
     <model type='ivshmem-plain'/>
-    <size unit='M'>32</size>
+    <size unit='M'>64</size>
   </shmem>
 # </devices>
-##################################################################################
+#####【这是备用选项】#####################################################################
 $ sudo vim /etc/profile    # 添加下面三行到该文件或直接执行
-##################################################################################
+#########################################################################################
 # touch /dev/shm/looking-glass
+# truncate -s 64M /dev/shm/looking-glass
 # chown lhjok:kvm /dev/shm/looking-glass
 # chmod 660 /dev/shm/looking-glass
+#####【这是备用选项】#####################################################################
 $ sudo vim /etc/tmpfiles.d/looking-glass.conf
-# f /dev/shm/looking-glass 0660 lhjok kvm -
+# f /dev/shm/looking-glass 0660 lhjok kvm 64M
+#####【这是备用选项】#####################################################################
 $ sudo semanage fcontext -a -t svirt_tmpfs_t /dev/shm/looking-glass
 $ sudo systemd-tmpfiles --create /etc/tmpfiles.d/looking-glass.conf
 $ sudo restorecon -v /dev/shm/looking-glass
-##################################################################################
+#####【这是首要选项】#####################################################################
+$ sudo vim /etc/udev/rules.d/99-kvmfr.rules
+# SUBSYSTEM=="kvmfr", OWNER="lhjok", GROUP="kvm", MODE="0660"
+########################################################################################
+$ sudo vim /etc/modules-load.d/kvmfr.conf
+# kvmfr
+########################################################################################
+$ sudo vim /etc/modprobe.d/kvmfr.conf
+# options kvmfr static_size_mb=64
+########################################################################################
 # 二、启动Windows10虚拟机并下载：
 # looking-glass-host-B7.zip   #解压文件（Looking-Glass）
 # virtio-win10-prewhql-0.1-161.zip   #解压文件（Virtio）
@@ -254,7 +275,7 @@ $ sudo restorecon -v /dev/shm/looking-glass
 # 管理员执行安装：（Looking-Glass）-> looking-glass-host-setup
 # 安装AnyDesk远程桌面并设置远程控制密码，记录好远程登录码，安装完后关机。
 # 在Virt-Manager虚拟机管理器，选择->查看->详情，删除显卡设备或设置NONE。
-##################################################################################
+########################################################################################
 # 三、安装Looking-Glass依赖包：
 $ sudo transactional-update pkg install zlib-devel-static spice-protocol-devel \
 libnettle-devel libXScrnSaver-devel libXpresent-devel pipewire-devel \
@@ -262,32 +283,49 @@ pulseaudio-devel libsamplerate-devel libsamplerate0 binutils-devel libXpresent1 
 Mesa-libGLESv3-devel Mesa-libGL-devel Mesa-libEGL-devel Mesa-devel \
 Mesa-libEGL-devel Mesa-libGL-devel Mesa-libGLESv1_CM-devel Mesa-libGLESv2-devel \
 libzstd-devel-static fuse3-devel libunwind-devel libdw-devel
-##################################################################################
+########################################################################################
 # 四、克隆Looking-Glass官方源代码：
 $ git clone https://github.com/gnif/LookingGlass.git
 $ cd LookingGlass
 $ git checkout B7  # (可选)指定版本
 $ git submodule update --init --recursive
-##################################################################################
+########################################################################################
 # 五、编译Looking-Glass客户端：
 $ mkdir client/build
 $ cd client/build
 $ cmake ../ -DCMAKE_C_COMPILER=gcc
 $ make
-##################################################################################
-# 六、编译Looking-Glass主机端：
-$ mkdir host/build
-$ cd host/build
-$ cmake .. -DCMAKE_C_COMPILER=gcc
-$ make
-##################################################################################
+########################################################################################
+# 六、编译Looking-Glass内核模块(kvmfr):
+$ cd LookingGlass/module
+$ make -C /lib/modules/$(uname -r)/build M=$PWD modules
+$ sudo mkdir -p /var/lib/kvmfr
+$ sudo cp kvmfr.ko /var/lib/kvmfr/
+########################################################################################
+$ sudo mkdir -p /var/lib/shim-signed/mok
+$ cd /var/lib/shim-signed/mok
+$ sudo openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER \
+-out MOK.der -nodes -days 3650 -subj "/CN=KVMFR Local Key/"
+$ sudo mokutil --import MOK.der    # 设置一次性密码。
+# 运行 sudo reboot 重启系统。在蓝色的 MOK Management 引导界面中:
+# 1. 选择 Enroll MOK -> Continue -> Yes。
+# 2. 输入刚才设置的一次性密码。
+# 3. 选择 Reboot 重启进入系统。
+###########################################################################################
+$ sudo /lib/modules/$(uname -r)/build/scripts/sign-file sha256 \
+/var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der /var/lib/kvmfr/kvmfr.ko
+$ sudo insmod /var/lib/kvmfr/kvmfr.ko static_size_mb=64
+$ ls -lh /dev/kvmfr0    # 验证设备是否生成且拥有64MB空间
+###########################################################################################
 # 编译Looking-Glass后，把(looking-glass-client)放到(~/.local/bin)。
 # 开启Windows10虚拟机并使用AnyDesk远程打开，安装（virtio-win 和 spice）驱动：
 # (virtio-win-guest-tools.exe) 和 (spice-guest-tools-latest.exe)
-##################################################################################
+########################################################################################
 # 编辑Looking-Glass配置文件：
 $ vim ~/.config/looking-glass/client.ini
-##################################################################################
+########################################################################################
+# [app]
+# shmFile=/dev/kvmfr0
 # [win]
 # title=Windows10
 # size=1280x720
@@ -296,20 +334,20 @@ $ vim ~/.config/looking-glass/client.ini
 # [spice]
 # enable=yes
 # clipboard=yes
-##################################################################################
+########################################################################################
 # 设置显示器大小：size=960x540(1080P-1K)  size=1280x720(1440P-2K) 
-##################################################################################
-$ looking-glass-client    # 启动Windows10虚拟机后执行该命令
+########################################################################################
+$ looking-glass-client -f /dev/kvmfr0    # 启动Windows10虚拟机后执行该命令
 # 目前 Gnome Wayland 环境无法显示窗口标题栏
 $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # uri_default = "qemu:///system"
-##################################################################################
+########################################################################################
 # 编辑Looking-Glass桌面文件：（Windows10快速启动）
 # [Desktop Entry]
 # Name=Looking Glass
 # GenericName=Looking Glass
 # Comment[zh_CN]=启动Windows虚拟机
-# Exec=bash -c "virsh start Windows10 && sleep 9 ; looking-glass-client"
+# Exec=bash -c "virsh start Windows10 && sleep 9 ; looking-glass-client -f /dev/kvmfr0"
 # Icon=/home/lhjok/.local/share/icons/looking-glass/glass.png
 # StartupWMClass=Looking Glass
 # Terminal=false
