@@ -200,6 +200,17 @@ $ sudo systemctl enable libvirtd.service    # 开机启动libvirtd服务
 $ sudo virsh net-list --all    # 查看虚拟网络列表
 $ sudo virsh net-start --network default    # 启动default不活跃的网络
 $ sudo virsh net-autostart --network default    # 自动启动default不活跃的网络
+##################################################################################
+$ sudo vim /etc/libvirt/qemu.conf
+##################################################################################
+security_driver = "none"    # <-- 关闭防火墙，否则会限制访问权限。
+cgroup_device_acl = [
+  "/dev/null", "/dev/full", "/dev/zero",
+  "/dev/random", "/dev/urandom",
+  "/dev/ptmx", "/dev/userfaultfd",
+  "/dev/kvm", "/dev/kvmfr0"    # <-- 添加这一行，添加kvmfr支持。
+]
+##################################################################################
 ```
 
 - 安装和配置 `Looking-Glass` 共享直通KVM显示器：
