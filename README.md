@@ -268,6 +268,24 @@ $ sudo vim /etc/modules-load.d/kvmfr.conf
 $ sudo vim /etc/modprobe.d/kvmfr.conf
 # options kvmfr static_size_mb=64
 ########################################################################################
+$ sudo vim /etc/systemd/system/kvmfr.service
+########################################################################################
+[Unit]
+Description=Load custom kvmfr module for Looking Glass
+After=syslog.target
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/insmod /var/lib/kvmfr/kvmfr.ko static_size_mb=64
+ExecStartPost=/usr/bin/chown lhjok:kvm /dev/kvmfr0
+ExecStartPost=/usr/bin/chmod 0660 /dev/kvmfr0
+[Install]
+WantedBy=multi-user.target
+########################################################################################
+$ sudo chcon -t modules_object_t /var/lib/kvmfr/kvmfr.ko
+$ sudo chmod 644 /var/lib/kvmfr/kvmfr.ko
+$ sudo systemctl enable --now kvmfr.service
+########################################################################################
 # 二、启动Windows10虚拟机并下载：
 # looking-glass-host-B7.zip   #解压文件（Looking-Glass）
 # virtio-win10-prewhql-0.1-161.zip   #解压文件（Virtio）
