@@ -231,6 +231,20 @@ cgroup_device_acl = [
 # 编辑Windows10配置文件（会检查配置文件是否错误）
 $ sudo virsh edit Windows10
 ########################################################################################
+# 查找到该设置，修改CPU数量为(3)，本机4核4线程CPU。
+<vcpu placement='static'>3</vcpu>
+# 在<vcpu>同级标签下添加<cputune>标签，绑定核心。
+<cputune>
+  <vcpupin vcpu='0' cpuset='1'/>
+  <vcpupin vcpu='1' cpuset='2'/>
+  <vcpupin vcpu='2' cpuset='3'/>
+  <emulatorpin cpuset='0'/>
+</cputune>
+# 对应的<cpu>拓扑配置。
+<cpu mode='host-passthrough' check='none'>
+  <topology sockets='1' cores='3' threads='1'/>
+</cpu>
+########################################################################################
 # <features>
   # <hyperv>
     <vendor_id state='on' value='whatever'/>
@@ -383,75 +397,6 @@ $ vim ~/.config/libvirt/libvirt.conf    # 解除(virsh)命令管理员权限
 # Type=Application
 ```
 
-- 本地编译安装NeoVim编辑器：
-
-```sh
-$ pip3 install pynvim
-$ git clone https://github.com/neovim/neovim.git
-$ cd neovim
-$ git checkout v0.10.1
-$ make CMAKE_INSTALL_PREFIX=/home/lhjok/.opt/neovim/
-$ make install
-# 安装NeoVim发行版NvChad工作环境：
-$ git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
-# :MasonInstallAll   # 下载完插件后运行命令
-# :checkhealth   # 检查是否提示安装错误信息
-$ git clone https://github.com/ryanoasis/nerd-fonts.git
-$ cd nerd-fonts
-$ ./install.sh JetBrainsMono   # 安装单个编程字体
-$ ./install.sh NerdFontsSymbolsOnly   # 安装单个编程图标
-```
-
-- 编辑NvChad配置文件：
-
-```lua
--- vim ~/.config/nvim/lua/chadrc.lua
--- 配置NvChad风格文件
-local M = {
-  base46 = {
-    theme = "onedark"
-  },
-  ui = {
-    statusline = {
-      theme = "vscode_colored",
-    },
-    nvdash = {
-      load_on_startup = true,
-    },
-  }
-}
-return M
--- vim ~/.config/nvim/lua/plugins/init.lua
--- 添加下面这段在(init.lua)文件
-{
-  'mrcjkb/rustaceanvim',
-  version = '^5',
-  lazy = false,
-}
--- 添加上面这段在(init.lua)文件
-```
-
-- 编辑NvChad配置快捷键文件：
-
-```lua
--- vim ~/.config/nvim/lua/mappings.lua
--- 把下面键绑定方案添加进本文件
-map("n", "<C-S>", ":w<CR>")
-map("v", "<C-S>", "<ESC>:w<CR>")
-map("i", "<C-S>", "<ESC>:w<CR>")
-map("n", "<C-A>", "ggVG")
-map("i", "<C-A>", "<ESC>ggVG")
-map("v", "<C-C>", '"+y')
-map("v", "<C-X>", '"+x')
-map("n", "<C-V>", '"+gP')
-map("v", "<C-V>", '"+gP')
-map("i", "<C-V>", "<C-R><C-O>+")
-map("n", "<C-Z>", "u")
-map("v", "<C-Z>", "<ESC>u")
-map("i", "<C-Z>", "<ESC>u")
--- 把上面键绑定方案添加进本文件
-```
-
 - 升级和回滚系统：
 
 ```sh
@@ -490,12 +435,10 @@ $ podman rmi 镜像ID     #删除镜像
 ```sh
 $ podman pull mysql/mysql-server
 $ podman pull postgres
-```
-
-- 查看已安装的镜像：
-
-```sh
-$ podman images
+$ podman images   # 查看已安装的镜像
+$ podman ps -a   # 查看所有已安装的实例
+$ podman logs qn_mysql   # 查看实例的安装日志
+$ podman logs qn_postgres   # 查看实例的安装日志
 ```
 
 - 生成一个MySQL和PostgreSQL实例：
@@ -505,19 +448,6 @@ $ podman run -itd --name=qn_mysql -e MYSQL_ROOT_PASSWORD=password -p \
 3306:3306 docker.io/mysql/mysql-server:latest
 $ podman run --name qn_postgres -e TZ=PRC -e POSTGRES_USER=root -e \
 POSTGRES_DB=qndbs -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
-```
-
-- 查看实例的安装日志：
-
-```sh
-$ podman logs qn_mysql
-$ podman logs qn_postgres
-```
-
-- 查看所有已安装的实例：
-
-```sh
-$ podman ps -a
 ```
 
 - 进入实例并执行登录命令：
@@ -532,11 +462,7 @@ $ podman exec -it qn_postgres psql -U root qndbs
 
 ```sh
 $ podman pull redis
-```
-
-- 生成一个Redis实例：
-
-```sh
+# 生成一个Redis实例
 $ podman run -d --name=qn_redis -p 6379:6379 docker.io/library/redis:latest
 ```
 
