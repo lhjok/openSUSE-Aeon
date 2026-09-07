@@ -259,7 +259,8 @@ $ sudo virsh edit Windows10
     <qemu:arg value='-device'/>
     <qemu:arg value='{"driver":"ivshmem-plain","id":"shmem0","memdev":"looking-glass"}'/>
     <qemu:arg value='-object'/>
-    <qemu:arg value='{"qom-type":"memory-backend-file","id":"looking-glass","mem-path":"/dev/kvmfr0","size":67108864,"share":true}'/>
+    <qemu:arg value='{"qom-type":"memory-backend-file","id":"looking-glass",
+    "mem-path":"/dev/kvmfr0","size":67108864,"share":true}'/>
   </qemu:commandline>
 </domain>
 #####【这是备用选项】#####################################################################
