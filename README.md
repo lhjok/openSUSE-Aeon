@@ -245,6 +245,13 @@ $ sudo virsh edit Windows10
   <topology sockets='1' cores='3' threads='1'/>
 </cpu>
 ########################################################################################
+#<devices>
+  #<sound model='ich9'>
+    <audio id='1'/>
+  #</sound>
+  <audio id='1' type='spice'/>
+#</devices>
+########################################################################################
 # <features>
   # <hyperv>
     <vendor_id state='on' value='whatever'/>
