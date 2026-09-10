@@ -382,9 +382,14 @@ $ vim ~/.config/looking-glass/client.ini
 # size=1280x720
 # jitRender=yes
 # dontUpscale=yes
+# renderer=vulkan
 # [spice]
 # enable=yes
 # clipboard=yes
+# [input]
+# rawMouse=yes
+# [egl]
+# vsync=yes
 ########################################################################################
 # 设置显示器大小：size=960x540(1080P-1K)  size=1280x720(1440P-2K) 
 ########################################################################################
