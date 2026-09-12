@@ -315,6 +315,7 @@ ExecStartPost=/usr/bin/chmod 0660 /dev/kvmfr0
 [Install]
 WantedBy=multi-user.target
 ########################################################################################
+# 当系统升级内核并重新编译模块后，再次执行下面命令。
 $ sudo chcon -t modules_object_t /var/lib/kvmfr/kvmfr.ko
 $ sudo chmod 644 /var/lib/kvmfr/kvmfr.ko
 $ sudo systemctl enable --now kvmfr.service
@@ -347,7 +348,7 @@ $ cd client/build
 $ cmake ../ -DCMAKE_C_COMPILER=gcc
 $ make
 ########################################################################################
-# 六、编译Looking-Glass内核模块(kvmfr):
+# 六、编译Looking-Glass内核模块(kvmfr):(当系统升级内核后，需要重新编译该模块)
 $ cd LookingGlass/module
 $ make -C /lib/modules/$(uname -r)/build M=$PWD modules
 $ sudo mkdir -p /var/lib/kvmfr
@@ -363,6 +364,7 @@ $ sudo mokutil --import MOK.der    # 设置一次性密码。
 # 2. 输入刚才设置的一次性密码。
 # 3. 选择 Reboot 重启进入系统。
 ###########################################################################################
+# 当系统升级内核并重新编译模块后，再次执行下面命令。
 $ sudo /lib/modules/$(uname -r)/build/scripts/sign-file sha256 \
 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der /var/lib/kvmfr/kvmfr.ko
 $ sudo insmod /var/lib/kvmfr/kvmfr.ko static_size_mb=64
